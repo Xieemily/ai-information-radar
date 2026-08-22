@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import os
-from typing import Protocol
+from typing import Any, Protocol
 
 from app.services.providers import OpenAICompatibleProvider
 
@@ -58,7 +58,25 @@ class ModelTranslationProvider:
         text: str,
         target_language: str = "zh-CN",
     ) -> TranslationResult:
-        raise NotImplementedError
+        payload = await self.client.translate(title, text, target_language)
+        return validate_translation_result(payload, self.name)
+
+
+def validate_translation_result(
+    payload: dict[str, Any],
+    provider: str,
+) -> TranslationResult:
+    title = payload.get("translated_title")
+    text = payload.get("translated_text")
+    if not isinstance(title, str) or not title.strip():
+        raise ValueError("翻译服务没有返回有效标题")
+    if text is not None and not isinstance(text, str):
+        raise ValueError("翻译服务返回了无效正文")
+    return TranslationResult(
+        translated_title=title.strip(),
+        translated_text=text.strip() if isinstance(text, str) and text.strip() else None,
+        provider=provider,
+    )
 
 
 def _ollama_provider() -> ModelTranslationProvider:

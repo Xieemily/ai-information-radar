@@ -9,6 +9,7 @@ from app.services.translation import (
     ModelTranslationProvider,
     TranslationNotConfigured,
     configured_translation_provider,
+    validate_translation_result,
 )
 
 
@@ -56,3 +57,19 @@ def test_explicit_openai_compatible_provider_and_invalid_mode(monkeypatch):
     monkeypatch.setenv("TRANSLATION_PROVIDER", "mystery")
     with pytest.raises(ValueError, match="TRANSLATION_PROVIDER"):
         configured_translation_provider()
+
+
+def test_translation_rejects_empty_provider_title():
+    with pytest.raises(ValueError, match="有效标题"):
+        validate_translation_result(
+            {"translated_title": " ", "translated_text": "text"},
+            provider="model",
+        )
+
+
+def test_translation_rejects_non_string_text():
+    with pytest.raises(ValueError, match="无效正文"):
+        validate_translation_result(
+            {"translated_title": "标题", "translated_text": ["bad"]},
+            provider="model",
+        )

@@ -140,7 +140,7 @@ git commit -m "feat: add mock-first translation providers"
 - Modify: `app/services/translation.py`
 - Modify: `tests/test_translation.py`
 
-- [ ] **Step 1: Write a failing output-validation test**
+- [x] **Step 1: Write a failing output-validation test**
 
 ```python
 def test_translation_rejects_empty_provider_title():
@@ -151,13 +151,13 @@ def test_translation_rejects_empty_provider_title():
         }, provider="model")
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run: `.venv/bin/pytest tests/test_translation.py::test_translation_rejects_empty_provider_title -q`
 
 Expected: FAIL because `validate_translation_result` is missing.
 
-- [ ] **Step 3: Implement validation and the model adapter**
+- [x] **Step 3: Implement validation and the model adapter**
 
 Add `OpenAICompatibleProvider.translate()` using:
 
@@ -183,7 +183,7 @@ def validate_translation_result(payload: dict, provider: str) -> TranslationResu
     )
 ```
 
-- [ ] **Step 4: Verify GREEN and regression**
+- [x] **Step 4: Verify GREEN and regression**
 
 Run: `.venv/bin/pytest tests/test_translation.py tests/test_pipeline.py -q`
 
