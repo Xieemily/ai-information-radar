@@ -1,0 +1,82 @@
+tests/test_api.py
+  s_1a757e6fb6fb91::t_f4874cddd283ae 1-144
+docs/superpowers/plans/2026-08-23-on-demand-translation.md
+  s_1a757e6fb6fb91::t_cfac395e4e6918 20,31,35
+  s_1a757e6fb6fb91::t_05c8af5daefdca 1-19,21-30,32-34,36-445
+app/routes/web.py
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-305
+app/services/providers.py
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-98
+app/models.py
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-112
+app/templates/partials/item_row.html
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-31
+app/routes/api.py
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-176
+.gitignore
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-16
+app/static/app.css
+  s_1a757e6fb6fb91::t_84d1f8d381c7bd 1-359
+.env.example
+  s_1a757e6fb6fb91::t_490138688eef7a 1-19
+README.md
+  s_1a757e6fb6fb91::t_13e9aaf73e4b7d 1-71
+app/adapters/rss.py
+  s_1a757e6fb6fb91::t_d6ee63183958d3 1-134
+app/database.py
+  s_1a757e6fb6fb91::t_e0e2d24dcbcffa 1-42
+app/schemas.py
+  s_1a757e6fb6fb91::t_0bc68df64654ce 1-78
+app/services/briefing.py
+  s_1a757e6fb6fb91::t_3924c56c1a3a02 1-121
+app/services/clustering.py
+  s_1a757e6fb6fb91::t_5ae9c34fb4d16e 1-62
+app/services/feedback.py
+  s_1a757e6fb6fb91::t_fad4aa243eb499 1-58
+app/services/ingestion.py
+  s_1a757e6fb6fb91::t_5aa8944daa812f 1-94
+app/services/jobs.py
+  s_1a757e6fb6fb91::t_d9fa2a22fbd916 1-79
+app/services/obsidian.py
+  s_1a757e6fb6fb91::t_ab1ee437264df0 1-48
+app/static/app.js
+  s_1a757e6fb6fb91::t_57defd3345b12b 1-67
+app/static/favicon.svg
+  s_1a757e6fb6fb91::t_11e3a1c5041ced 1-7
+app/templates/base.html
+  s_1a757e6fb6fb91::t_fb517ed0b40e30 1-81
+app/templates/event_detail.html
+  s_1a757e6fb6fb91::t_c24953687f9409 1-20
+app/templates/events.html
+  s_1a757e6fb6fb91::t_808d4c54dcd70f 1-24
+app/templates/items.html
+  s_1a757e6fb6fb91::t_769ea489a689a7 1-44
+app/templates/jobs.html
+  s_1a757e6fb6fb91::t_a5784ce4f8b5f2 1-34
+app/templates/partials/evidence.html
+  s_1a757e6fb6fb91::t_31fe6424274f76 1-12
+app/templates/sources.html
+  s_1a757e6fb6fb91::t_96d32e333c9656 1-27
+app/templates/today.html
+  s_1a757e6fb6fb91::t_a05691054e362b 1-79
+docker-compose.yml
+  s_1a757e6fb6fb91::t_9b95f9ac8e98a1 1-12
+tests/test_pipeline.py
+  s_1a757e6fb6fb91::t_275f8299b04fc4 1-244
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "37af5334cbcb604672a99108559158ef349a6444",
+  "prompts": {},
+  "sessions": {
+    "s_1a757e6fb6fb91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a02a3b-f21c-79f1-bc59-c8d5ef702672",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Xieemily <xie.mengying@yahoo.com>"
+    }
+  }
+}
