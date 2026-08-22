@@ -38,7 +38,7 @@ Run: `.venv/bin/pytest -q && .venv/bin/python -m compileall -q app tests`
 
 Expected: 16 tests pass; compileall exits 0.
 
-- [ ] **Step 4: Commit the baseline, design, and plan**
+- [x] **Step 4: Commit the baseline, design, and plan**
 
 ```bash
 git add .gitignore .env.example Dockerfile LICENSE README.md app docker-compose.yml pyproject.toml tests docs
@@ -53,7 +53,7 @@ Expected: commit author is `Xieemily <xie.mengying@yahoo.com>`; no `.env`, datab
 - Create: `app/services/translation.py`
 - Create: `tests/test_translation.py`
 
-- [ ] **Step 1: Write failing tests for Mock output and provider resolution**
+- [x] **Step 1: Write failing tests for Mock output and provider resolution**
 
 ```python
 def test_mock_provider_is_explicit_and_does_not_need_network():
@@ -74,13 +74,13 @@ def test_auto_provider_requires_a_configured_engine(monkeypatch):
         configured_translation_provider()
 ```
 
-- [ ] **Step 2: Run the tests and verify RED**
+- [x] **Step 2: Run the tests and verify RED**
 
 Run: `.venv/bin/pytest tests/test_translation.py -q`
 
 Expected: FAIL because `app.services.translation` does not exist.
 
-- [ ] **Step 3: Implement the minimal provider contract**
+- [x] **Step 3: Implement the minimal provider contract**
 
 Create:
 
@@ -120,7 +120,7 @@ Implement `configured_translation_provider()` with exact modes:
 - `auto` → Ollama when `OLLAMA_MODEL` exists, otherwise OpenAI-compatible when both LLM variables exist, otherwise raise `TranslationNotConfigured`
 - any other value → raise `ValueError`
 
-- [ ] **Step 4: Verify GREEN**
+- [x] **Step 4: Verify GREEN**
 
 Run: `.venv/bin/pytest tests/test_translation.py -q`
 
