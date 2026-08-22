@@ -203,7 +203,7 @@ git commit -m "feat: add safe model translation adapter"
 - Modify: `app/services/translation.py`
 - Modify: `tests/test_translation.py`
 
-- [ ] **Step 1: Write a failing cache test**
+- [x] **Step 1: Write a failing cache test**
 
 ```python
 def test_translate_item_caches_first_result():
@@ -217,13 +217,13 @@ def test_translate_item_caches_first_result():
     assert second.translation.is_mock is True
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run: `.venv/bin/pytest tests/test_translation.py::test_translate_item_caches_first_result -q`
 
 Expected: FAIL because persistence and `translate_item` are missing.
 
-- [ ] **Step 3: Add the one-to-one model**
+- [x] **Step 3: Add the one-to-one model**
 
 Add `ItemTranslation` with:
 
@@ -243,7 +243,7 @@ class TranslationOutcome:
 
 Implement `translate_item(session, item, provider=None, force=False)`: return cache unless forced; validate provider output; commit only valid results; update the existing row when forced.
 
-- [ ] **Step 4: Verify GREEN**
+- [x] **Step 4: Verify GREEN**
 
 Run: `.venv/bin/pytest tests/test_translation.py -q`
 

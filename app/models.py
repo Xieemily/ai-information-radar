@@ -62,6 +62,30 @@ class Item(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     source: Mapped[Source] = relationship(back_populates="items")
     clusters: Mapped[list["EventCluster"]] = relationship(secondary=cluster_items, back_populates="items")
+    translation: Mapped["ItemTranslation | None"] = relationship(
+        back_populates="item",
+        cascade="all, delete-orphan",
+        uselist=False,
+    )
+
+
+class ItemTranslation(Base):
+    __tablename__ = "item_translations"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    item_id: Mapped[int] = mapped_column(
+        ForeignKey("items.id", ondelete="CASCADE"),
+        unique=True,
+        index=True,
+    )
+    target_language: Mapped[str] = mapped_column(String(20), default="zh-CN")
+    translated_title: Mapped[str] = mapped_column(Text)
+    translated_text: Mapped[str | None] = mapped_column(Text)
+    provider: Mapped[str] = mapped_column(String(100))
+    is_mock: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+    item: Mapped[Item] = relationship(back_populates="translation")
 
 
 class EventCluster(Base):
