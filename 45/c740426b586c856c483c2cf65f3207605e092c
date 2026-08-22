@@ -1,0 +1,23 @@
+app/services/translation.py
+  s_1a757e6fb6fb91::t_6c25262434b13f 1-100
+docs/superpowers/plans/2026-08-23-on-demand-translation.md
+  s_1a757e6fb6fb91::t_d5465a2ef5bc5e 41,56,77,83,123
+tests/test_translation.py
+  s_1a757e6fb6fb91::t_db8be34d96df24 1-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "45c740426b586c856c483c2cf65f3207605e092c",
+  "prompts": {},
+  "sessions": {
+    "s_1a757e6fb6fb91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a02a3b-f21c-79f1-bc59-c8d5ef702672",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Xieemily <xie.mengying@yahoo.com>"
+    }
+  }
+}
