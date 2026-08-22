@@ -1,0 +1,24 @@
+.env.example
+  s_1a757e6fb6fb91::t_2138c2c73ff2ec 15-20
+README.md
+  s_1a757e6fb6fb91::t_2138c2c73ff2ec 16,39-53
+  s_1a757e6fb6fb91::t_40f194124dc2a2 54
+docs/superpowers/plans/2026-08-23-on-demand-translation.md
+  s_1a757e6fb6fb91::t_6b4babba5ca4f8 341,351,360
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "b09bee91aa3ee1c87133374b4515daf61f8610f2",
+  "prompts": {},
+  "sessions": {
+    "s_1a757e6fb6fb91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a02a3b-f21c-79f1-bc59-c8d5ef702672",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Xieemily <xie.mengying@yahoo.com>"
+    }
+  }
+}
