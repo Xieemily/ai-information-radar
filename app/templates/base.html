@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7f8">
+  <title>{% block title %}AI 信息雷达{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', path='favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', path='app.css') }}">
+  <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <a class="brand" href="/" aria-label="AI 信息雷达首页">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+        <span><strong>Radar</strong><small>AI 信息雷达</small></span>
+      </a>
+
+      {% set current_path = request.url.path if request is defined else '/' %}
+      <p class="nav-label">工作台</p>
+      <nav class="nav-list">
+        <a href="/" class="{{ 'active' if current_path == '/' else '' }}">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg></span><span>今日简报</span>
+        </a>
+        <a href="/items" class="{{ 'active' if current_path.startswith('/items') else '' }}">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h9"/></svg></span><span>信息流</span>
+        </a>
+        <a href="/events" class="{{ 'active' if current_path.startswith('/events') else '' }}">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="8" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="m8.8 8.9 2.2 6M15.3 8.5l-2.1 6.6M9 8l6-1"/></svg></span><span>事件</span>
+        </a>
+        <a href="/sources" class="{{ 'active' if current_path.startswith('/sources') else '' }}">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M5.6 18.4a9 9 0 0 1 0-12.8M18.4 5.6a9 9 0 0 1 0 12.8M8.4 15.6a5 5 0 0 1 0-7.2M15.6 8.4a5 5 0 0 1 0 7.2"/></svg></span><span>信息源</span>
+        </a>
+        <a href="/jobs" class="{{ 'active' if current_path.startswith('/jobs') or current_path.startswith('/system') else '' }}">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.6M20 4v4.6h-4.6"/></svg></span><span>系统状态</span>
+        </a>
+      </nav>
+
+      {% if stats is defined %}
+        <div class="sidebar-insight">
+          <div><span>今日入库</span><strong>{{ stats.today_items|default(0) }}</strong></div>
+          <div><span>启用来源</span><strong>{{ stats.active_sources|default(stats.source_count|default(0)) }}</strong></div>
+        </div>
+      {% endif %}
+
+      {% set system_ok = stats.system_ok|default(true) if stats is defined else true %}
+      <div class="sidebar-foot">
+        <div class="system-state"><span class="status-dot {{ 'ok' if system_ok else 'warn' }}"></span><span>{{ '同步正常' if system_ok else '有来源异常' }}</span></div>
+        <button class="icon-button" type="button" aria-label="切换深色模式" title="切换主题" data-theme-toggle>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.3A8.5 8.5 0 0 1 8.7 3.8 8.5 8.5 0 1 0 20.2 15.3Z"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <header class="mobile-header">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><b></b></span><strong>Radar</strong></a>
+      <button class="nav-toggle" type="button" aria-label="打开导航" aria-expanded="false" data-nav-toggle>菜单</button>
+    </header>
+
+    <main class="main" id="main">
+      <div class="topbar">
+        <div class="breadcrumbs"><span>AI 信息雷达</span><i>/</i><strong>{{ '今日简报' if current_path == '/' else '信息流' if current_path.startswith('/items') else '事件' if current_path.startswith('/events') else '信息源' if current_path.startswith('/sources') else '系统状态' }}</strong></div>
+        <div class="topbar-actions">
+          <a class="command-search" href="/items" aria-label="搜索信息流"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><span>搜索</span><kbd>/</kbd></a>
+          <span class="live-chip"><i></i>LIVE</span>
+        </div>
+      </div>
+      {% if notice is defined and notice %}
+        <div class="notice" role="status">{{ notice }}</div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', path='app.js') }}" defer></script>
+</body>
+</html>

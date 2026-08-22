@@ -1,0 +1,8 @@
+<div class="empty-state">
+  <span class="empty-orbit" aria-hidden="true">·</span>
+  <h2>{{ title|default('这里还没有内容') }}</h2>
+  <p>{{ message|default('添加信息源后，雷达会开始收集值得关注的信号。') }}</p>
+  {% if action_url is defined and action_url %}
+    <a class="button primary" href="{{ action_url }}">{{ action_label|default('开始设置') }}</a>
+  {% endif %}
+</div>

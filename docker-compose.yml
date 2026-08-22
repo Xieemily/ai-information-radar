@@ -1,0 +1,12 @@
+services:
+  radar:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      # Uncomment and adjust to enable Obsidian export from the container.
+      # - /absolute/path/to/Obsidian Vault:/vault
+    restart: unless-stopped

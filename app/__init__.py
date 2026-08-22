@@ -1,0 +1,2 @@
+"""AI Information Radar backend."""
+

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }} · AI 信息雷达{% endblock %}
+{% block content %}
+  <a class="back-link" href="/events">← 返回事件</a>
+  <header class="event-hero">
+    <div class="feed-meta"><span class="source-name">{{ event.source_count }} 个独立来源</span><span>·</span><span>{{ event['items']|length }} 条证据</span></div>
+    <h1>{{ event.title }}</h1>
+    <p>{{ event.summary }}</p>
+    <div class="event-range"><span>首次出现 {{ event.first_seen_at }}</span><span>最近更新 {{ event.last_seen_at }}</span></div>
+  </header>
+  <div class="section-title-row"><div><p class="section-kicker">EVIDENCE TIMELINE</p><h2>证据时间线</h2></div></div>
+  <div class="evidence-timeline">
+    {% for item in event['items'] %}
+      <article class="timeline-entry">
+        <span class="timeline-dot"></span>
+        <div><time>{{ item.published_at }}</time><h2><a href="{{ item.canonical_url }}" target="_blank" rel="noopener noreferrer">{{ item.title }}</a></h2><p>{{ (item.clean_text or '打开原文查看完整内容。')|truncate(240, true, '…') }}</p><span class="tag">{{ item.source.title }}</span></div>
+      </article>
+    {% else %}<p class="muted">此事件暂无可见证据。</p>{% endfor %}
+  </div>
+{% endblock %}

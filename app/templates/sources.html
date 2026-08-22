@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}信息源 · AI 信息雷达{% endblock %}
+{% block content %}
+  <header class="page-head">
+    <div><p class="eyebrow">SOURCE CONTROL</p><h1>信息源</h1><p class="page-subtitle">决定雷达看哪里，也决定它忽略什么。</p></div>
+    <div class="metric"><strong>{{ stats.active_sources|default(sources|default([])|selectattr('enabled')|list|length) if stats is defined else sources|default([])|selectattr('enabled')|list|length }}</strong><span>个启用</span></div>
+  </header>
+
+  <section class="add-source panel">
+    <div><p class="section-kicker">ADD SOURCE</p><h2>添加信息源</h2><p>支持 RSS / Atom、Podcast RSS 和 RSSHub；YouTube/Bilibili 第一版请填写对应 Feed 地址。</p></div>
+    <form method="post" action="/sources" hx-post="/sources" hx-target="#source-list" hx-swap="afterbegin" class="source-form">
+      <label><span>地址</span><input type="url" name="url" required placeholder="https://example.com/feed.xml"></label>
+      <label><span>名称（可选）</span><input type="text" name="title" placeholder="自动识别"></label>
+      <label><span>类型</span><select name="type"><option value="rss">RSS / Atom / RSSHub</option><option value="youtube">YouTube Feed</option><option value="podcast">Podcast RSS</option></select></label>
+      <label><span>优先级</span><select name="priority"><option value="1">普通</option><option value="2">重要</option><option value="3">核心</option></select></label>
+      <button class="button primary" type="submit">添加来源</button>
+    </form>
+  </section>
+
+  <div class="source-list" id="source-list">
+    {% for source in sources|default([]) %}
+      {% include "partials/source_row.html" %}
+    {% else %}
+      {% with title='还没有信息源', message='从你每天会主动查看的 5 个来源开始，先求信噪比，不求数量。' %}{% include "partials/empty.html" %}{% endwith %}
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% if evidence is defined and evidence %}
+  <div class="evidence-list">
+    {% for source in evidence %}
+      <a class="evidence" href="{{ source.url }}" target="_blank" rel="noopener noreferrer">
+        <span class="source-badge">{{ source.source|default(source.source_title|default('证据')) }}</span>
+        <span class="evidence-title">{{ source.title|default('查看原始内容') }}</span>
+        {% if source.quote|default('') %}<span class="evidence-quote">“{{ source.quote }}”</span>{% endif %}
+        <span class="external" aria-label="在新窗口打开">↗</span>
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}

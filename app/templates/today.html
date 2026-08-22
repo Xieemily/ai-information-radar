@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}今日简报 · AI 信息雷达{% endblock %}
+{% block content %}
+  {% set brief_data = brief.content_json|default(brief) if brief is defined and brief else {} %}
+  {% set brief_events = brief_data.events|default(brief_data.entries|default([])) %}
+  <header class="page-head hero-head">
+    <div>
+      <p class="eyebrow">AI DAILY BRIEF</p>
+      <h1>今日简报</h1>
+      <p class="page-subtitle">
+        {% if brief is defined and brief %}{{ brief_data.date|default(brief.brief_date|default('最新一期')) }} · 从噪声里辨认真正的变化{% else %}等待第一批信号进入雷达{% endif %}
+      </p>
+    </div>
+    <form method="post" action="/jobs/run" hx-post="/jobs/run" hx-swap="none" hx-disabled-elt="button">
+      <input type="hidden" name="job_type" value="brief">
+      <button class="button secondary" type="submit"><span aria-hidden="true">↻</span> 生成新简报</button>
+    </form>
+  </header>
+
+  {% if brief is defined and brief %}
+    <section class="brief-lead">
+      <div class="brief-index"><span>{{ brief_data.event_count|default(brief_events|length) }}</span><small>SIGNALS</small></div>
+      <div>
+        <p class="section-kicker">30 秒摘要</p>
+        <h2>{{ brief_data.headline|default('今日值得关注的信号') }}</h2>
+        <p>{{ brief_data.executive_summary|default(brief_data.summary|default('今日筛选出 ' ~ (brief_events|length) ~ ' 个重要事件，可从下方开始阅读。')) }}</p>
+      </div>
+    </section>
+
+    <div class="section-title-row">
+      <div><p class="section-kicker">KEY SIGNALS</p><h2>关键事件</h2></div>
+      <span class="muted">按综合重要度排序</span>
+    </div>
+
+    <div class="signal-list">
+      {% for event in brief_events %}
+        <article class="signal-card">
+          <div class="signal-rank">{{ '%02d'|format(loop.index) }}</div>
+          <div class="signal-body">
+            <div class="signal-meta">
+              {% if event.topic|default('') %}<span class="tag">{{ event.topic }}</span>{% endif %}
+              {% if event.confidence is defined %}<span class="confidence">置信度 {{ (event.confidence * 100)|round|int }}%</span>{% endif %}
+            </div>
+            <h3>{{ event.title|default(event.headline) }}</h3>
+            <p>{{ event.summary }}</p>
+            {% if event.why_it_matters|default('') %}
+              <div class="why"><strong>为什么重要</strong><span>{{ event.why_it_matters }}</span></div>
+            {% endif %}
+            {% if event.changes|default([]) %}
+              <div class="detail-block"><strong>变化</strong><ul>{% for change in event.changes %}<li>{{ change }}</li>{% endfor %}</ul></div>
+            {% endif %}
+            {% if event.risks|default([]) %}
+              <details class="risks"><summary>风险与反向证据</summary><ul>{% for risk in event.risks %}<li>{{ risk }}</li>{% endfor %}</ul></details>
+            {% endif %}
+            {% set evidence = event.evidence|default([]) %}
+            {% include "partials/evidence.html" %}
+          </div>
+        </article>
+      {% else %}
+        {% with title='简报还没有关键事件', message='采集到足够内容后，重要信号会出现在这里。', action_url='/sources', action_label='添加信息源' %}{% include "partials/empty.html" %}{% endwith %}
+      {% endfor %}
+    </div>
+
+    {% if brief_data.market_signals|default([]) or brief_data.watchlist|default([]) %}
+      <div class="insight-grid">
+        <section class="panel">
+          <p class="section-kicker">MARKET PULSE</p><h2>市场信号</h2>
+          <ul class="clean-list">{% for signal in brief_data.market_signals|default([]) %}<li><span class="pulse"></span><span>{{ signal }}</span></li>{% else %}<li class="muted">暂无显著市场信号</li>{% endfor %}</ul>
+        </section>
+        <section class="panel">
+          <p class="section-kicker">WATCH NEXT</p><h2>继续观察</h2>
+          <ul class="number-list">{% for signal in brief_data.watchlist|default([]) %}<li>{{ signal }}</li>{% else %}<li class="muted">暂无待观察主题</li>{% endfor %}</ul>
+        </section>
+      </div>
+    {% endif %}
+  {% else %}
+    {% with title='雷达尚未生成简报', message='先添加几个 RSS、YouTube 或 Podcast 来源，然后运行一次采集。', action_url='/sources', action_label='添加第一个信息源' %}{% include "partials/empty.html" %}{% endwith %}
+  {% endif %}
+{% endblock %}

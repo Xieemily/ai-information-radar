@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}事件 · AI 信息雷达{% endblock %}
+{% block content %}
+  <header class="page-head">
+    <div><p class="eyebrow">EVENTS</p><h1>事件</h1><p class="page-subtitle">把多篇报道合并成一个持续变化的事实单元。</p></div>
+    <div class="metric"><strong>{{ events|length }}</strong><span>个近期事件</span></div>
+  </header>
+  <div class="event-list">
+    {% for event in events %}
+      <a class="event-card" href="/events/{{ event.id }}">
+        <div class="event-score"><strong>{{ event.item_count }}</strong><span>证据</span></div>
+        <div class="event-copy">
+          <div class="feed-meta"><span class="source-name">{{ event.source_count }} 个来源</span><span>·</span><time data-relative-time>{{ event.last_seen_at }}</time></div>
+          <h2>{{ event.title }}</h2>
+          <p>{{ event.summary|truncate(190, true, '…') }}</p>
+          <div class="event-sources">{% for source in event.sources %}<span>{{ source }}</span>{% endfor %}</div>
+        </div>
+        <span class="event-arrow">→</span>
+      </a>
+    {% else %}
+      {% with title='还没有事件', message='完成一次采集和聚类后，多来源事件会出现在这里。', action_url='/jobs', action_label='运行采集' %}{% include "partials/empty.html" %}{% endwith %}
+    {% endfor %}
+  </div>
+{% endblock %}

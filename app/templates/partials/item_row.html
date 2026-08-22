@@ -1,0 +1,31 @@
+{% set source_label = item.source_title|default(item.source.title|default('未知来源')) %}
+{% set snippet = item.summary|default(item.excerpt|default(item.clean_text|default(''), true), true) %}
+<article class="feed-item {{ 'is-read' if item_state.read else '' }} {{ 'is-saved' if item_state.saved else '' }} {{ 'is-ignored' if item_state.ignored else '' }}" id="item-{{ item.id }}">
+  <div class="type-icon {{ item.content_type|default('article') }}" aria-hidden="true">{{ source_label[:1]|upper }}</div>
+  <div class="feed-body">
+    <div class="feed-meta">
+      <span class="source-name">{{ source_label }}</span>
+      <span>·</span>
+      {% if item.status|default('') == 'published_at_unknown' %}<time>时间未知</time>{% else %}<time data-relative-time>{{ item.published_at|default('时间未知') }}</time>{% endif %}
+      <span class="content-kind">{{ {'video':'视频', 'podcast':'播客', 'audio':'音频', 'article':'文章'}.get(item.content_type|default('article'), '内容') }}</span>
+      {% if item_state.saved %}<span class="saved-label">已收藏</span>{% endif %}
+    </div>
+    <h2><a href="{{ item.url|default(item.canonical_url|default('#')) }}" target="_blank" rel="noopener noreferrer">{{ item.title }}</a></h2>
+    <p>{{ snippet|truncate(180, true, '…') if snippet else '打开原文查看完整内容。' }}</p>
+    <div class="item-actions" aria-label="内容操作">
+      <form method="post" action="/items/{{ item.id }}/action" hx-post="/items/{{ item.id }}/action" hx-target="#item-{{ item.id }}" hx-swap="outerHTML">
+        <input type="hidden" name="view" value="{{ current_view|default('inbox') }}"><input type="hidden" name="action" value="{{ 'unread' if item_state.read else 'read' }}">
+        <button type="submit" title="{{ '标为未读' if item_state.read else '标为已读' }}">{{ '○' if item_state.read else '✓' }}</button>
+      </form>
+      <form method="post" action="/items/{{ item.id }}/action" hx-post="/items/{{ item.id }}/action" hx-target="#item-{{ item.id }}" hx-swap="outerHTML">
+        <input type="hidden" name="view" value="{{ current_view|default('inbox') }}"><input type="hidden" name="action" value="{{ 'unsave' if item_state.saved else 'save' }}">
+        <button class="{{ 'active' if item_state.saved else '' }}" type="submit" title="{{ '取消收藏' if item_state.saved else '收藏' }}">☆</button>
+      </form>
+      <form method="post" action="/items/{{ item.id }}/action" hx-post="/items/{{ item.id }}/action" hx-target="#item-{{ item.id }}" hx-swap="outerHTML">
+        <input type="hidden" name="view" value="{{ current_view|default('inbox') }}"><input type="hidden" name="action" value="{{ 'unignore' if item_state.ignored else 'ignore' }}">
+        <button type="submit" title="{{ '恢复内容' if item_state.ignored else '忽略' }}">{{ '↺' if item_state.ignored else '×' }}</button>
+      </form>
+      <a href="{{ item.url|default(item.canonical_url|default('#')) }}" target="_blank" rel="noopener noreferrer" aria-label="查看原文" title="查看原文">↗</a>
+    </div>
+  </div>
+</article>

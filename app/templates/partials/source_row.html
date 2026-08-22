@@ -1,0 +1,15 @@
+<article class="source-row" id="source-{{ source.id }}">
+  <div class="source-avatar {{ source.type|default('rss') }}">{{ {'youtube':'YT', 'podcast':'FM', 'webpage':'WEB', 'rss':'RSS'}.get(source.type|default('rss'), 'RSS') }}</div>
+  <div class="source-info">
+    <h2>{{ source.title|default(source.url) }}</h2>
+    <p>{{ source.url }}</p>
+  </div>
+  <div class="source-health">
+    <span class="status-dot {{ 'ok' if source.consecutive_failures|default(0) == 0 else 'warn' }}"></span>
+    <span>{% if source.consecutive_failures|default(0) %}连续失败 {{ source.consecutive_failures }} 次{% else %}{{ source.last_success_at|default('等待首次采集') }}{% endif %}</span>
+  </div>
+  <span class="priority p{{ source.priority|default(1) }}">{{ {1:'普通', 2:'重要', 3:'核心'}.get(source.priority|default(1), '普通') }}</span>
+  <form method="post" action="/sources/{{ source.id }}/toggle" hx-post="/sources/{{ source.id }}/toggle" hx-target="#source-{{ source.id }}" hx-swap="outerHTML">
+    <button class="switch {{ 'on' if source.enabled|default(true) else '' }}" type="submit" role="switch" aria-checked="{{ 'true' if source.enabled|default(true) else 'false' }}"><span></span><em>{{ '已启用' if source.enabled|default(true) else '已停用' }}</em></button>
+  </form>
+</article>

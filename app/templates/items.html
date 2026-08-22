@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}信息流 · AI 信息雷达{% endblock %}
+{% block content %}
+  <header class="page-head">
+    <div><p class="eyebrow">TIMELINE</p><h1>信息流</h1><p class="page-subtitle">关注你在意的变化，其余交给雷达过滤。</p></div>
+    <div class="metric"><strong>{{ stats.item_count|default(items|default([])|length) if stats is defined else items|default([])|length }}</strong><span>条内容</span></div>
+  </header>
+
+  <div class="filter-shell">
+    <nav class="inbox-tabs" aria-label="阅读状态">
+      <a href="/items?view=inbox" class="{{ 'active' if current_view|default('inbox') == 'inbox' else '' }}"><span>收件箱</span><b data-state-count="unread">{{ view_counts.unread|default(0) }}</b></a>
+      <a href="/items?view=saved" class="{{ 'active' if current_view|default('') == 'saved' else '' }}"><span>收藏</span><b data-state-count="saved">{{ view_counts.saved|default(0) }}</b></a>
+      <a href="/items?view=all" class="{{ 'active' if current_view|default('') == 'all' else '' }}"><span>全部</span><b data-state-count="all">{{ view_counts.all|default(0) }}</b></a>
+      <a href="/items?view=ignored" class="{{ 'active' if current_view|default('') == 'ignored' else '' }}"><span>已忽略</span><b data-state-count="ignored">{{ view_counts.ignored|default(0) }}</b></a>
+    </nav>
+    <nav class="topic-tabs" aria-label="主题分类">
+      <a href="/items?view={{ current_view|default('inbox') }}{% if query|default('') %}&q={{ query|urlencode }}{% endif %}{% if selected_type|default('') %}&type={{ selected_type|urlencode }}{% endif %}" class="{{ 'active' if not selected_category|default('') else '' }}">全部主题</a>
+      {% for topic in topic_categories|default([]) %}
+        <a href="/items?view={{ current_view|default('inbox') }}&category={{ topic.key }}{% if query|default('') %}&q={{ query|urlencode }}{% endif %}{% if selected_type|default('') %}&type={{ selected_type|urlencode }}{% endif %}" class="{{ 'active' if selected_category|default('') == topic.key else '' }}">{{ topic.label }}</a>
+      {% endfor %}
+    </nav>
+    <form class="filter-bar" method="get" action="/items">
+      <input type="hidden" name="view" value="{{ current_view|default('inbox') }}">
+      {% if selected_category|default('') %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><input type="search" name="q" value="{{ query|default('') }}" placeholder="搜索标题、正文或来源"></label>
+      <select name="type" aria-label="内容类型">
+        <option value="" {{ 'selected' if not selected_type|default('') else '' }}>全部类型</option>
+        <option value="article" {{ 'selected' if selected_type|default('') == 'article' else '' }}>文章</option>
+        <option value="video" {{ 'selected' if selected_type|default('') == 'video' else '' }}>视频</option>
+        <option value="podcast" {{ 'selected' if selected_type|default('') == 'podcast' else '' }}>播客</option>
+      </select>
+      <button class="button secondary" type="submit">筛选</button>
+    </form>
+  </div>
+
+  <div class="feed-list">
+    {% for item in items|default([]) %}
+      {% set item_state = item_states.get(item.id, {'read': false, 'saved': false, 'ignored': false}) %}
+      {% include "partials/item_row.html" %}
+    {% else %}
+      {% with title='信息流还是空的', message='添加并启用信息源，采集到的文章、视频和播客会按时间排列在这里。', action_url='/sources', action_label='管理信息源' %}{% include "partials/empty.html" %}{% endwith %}
+    {% endfor %}
+  </div>
+{% endblock %}
