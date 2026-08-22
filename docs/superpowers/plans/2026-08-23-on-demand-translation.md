@@ -338,7 +338,7 @@ git commit -m "feat: add bilingual translation UI"
 - Modify: `.env.example`
 - Modify: `README.md`
 
-- [ ] **Step 1: Add explicit configuration**
+- [x] **Step 1: Add explicit configuration**
 
 ```dotenv
 TRANSLATION_PROVIDER=mock
@@ -348,7 +348,7 @@ OLLAMA_MODEL=
 
 Keep existing `LLM_*` variables as the OpenAI-compatible fallback.
 
-- [ ] **Step 2: Document modes and the Mock warning**
+- [x] **Step 2: Document modes and the Mock warning**
 
 README must state that Mock does not translate language, never calls a network service, and exists only to validate UI/cache. Document switching to Ollama:
 
@@ -357,7 +357,7 @@ TRANSLATION_PROVIDER=ollama
 OLLAMA_MODEL=<installed-model-name>
 ```
 
-- [ ] **Step 3: Run the complete automated verification**
+- [x] **Step 3: Run the complete automated verification**
 
 Run: `.venv/bin/pytest -q && .venv/bin/python -m compileall -q app tests`
 

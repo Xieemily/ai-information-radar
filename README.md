@@ -13,6 +13,7 @@
 - 收件箱 / 收藏 / 忽略反馈闭环，反馈会影响简报筛选与排序
 - 缺失发布时间的内容显式隔离，不伪装成“刚刚发布”
 - 每日最多 10 个跨来源事件，并提供证据时间线
+- 按需翻译标题和摘要，在原文下方保留中英对照并缓存结果
 - Obsidian Markdown 导出
 
 暂不包含登录态平台爬取、多用户、原生移动端和自动投资建议。
@@ -34,6 +35,22 @@ uvicorn app.main:app --reload --env-file .env
 现有 Newsboat 配置通过 `LEGACY_FEEDS_FILE` 幂等导入；应用不会修改旧脚本或 cron。YouTube、Bilibili 第一版通过它们的 RSS/RSSHub Feed 接入，字幕和 Whisper Worker 属于下一里程碑。
 
 设置 `LLM_BASE_URL` 和 `LLM_MODEL` 后，每日任务会调用 OpenAI-compatible 接口润色确定性简报；服务端会校验证据 ID 集合，模型增删证据时拒绝保存。留空则完全使用本地确定性模式。
+
+### 按需翻译
+
+信息流卡片的“译”按钮只翻译当前标题与摘要，结果写入本地 SQLite，同一内容不会重复调用模型。
+
+默认配置为 `TRANSLATION_PROVIDER=mock`。Mock 不访问网络，也不提供真实语言翻译；它会显示带有“模拟译文 · 非真实翻译”标记的占位结果，用来验证交互、布局和缓存。
+
+安装 Ollama 与所需模型后，可切换为本地真实翻译：
+
+```dotenv
+TRANSLATION_PROVIDER=ollama
+OLLAMA_BASE_URL=http://127.0.0.1:11434/v1
+OLLAMA_MODEL=<已安装的模型名称>
+```
+
+`TRANSLATION_PROVIDER=auto` 会优先使用配置好的 Ollama；没有 `OLLAMA_MODEL` 时再尝试现有 `LLM_BASE_URL` / `LLM_MODEL`。系统不会静默调用公共翻译服务。
 
 ## 验证
 
