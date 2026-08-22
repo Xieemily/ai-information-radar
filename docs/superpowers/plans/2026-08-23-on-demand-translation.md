@@ -126,7 +126,7 @@ Run: `.venv/bin/pytest tests/test_translation.py -q`
 
 Expected: provider tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/services/translation.py tests/test_translation.py
@@ -189,7 +189,7 @@ Run: `.venv/bin/pytest tests/test_translation.py tests/test_pipeline.py -q`
 
 Expected: translation and existing evidence-bound provider tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/services/providers.py app/services/translation.py tests/test_translation.py
@@ -249,7 +249,7 @@ Run: `.venv/bin/pytest tests/test_translation.py -q`
 
 Expected: cache and force-refresh tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/models.py app/services/translation.py tests/test_translation.py
@@ -324,7 +324,7 @@ Run: `.venv/bin/pytest tests/test_api.py -k translation -q`
 
 Expected: all translation API/Web tests pass.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add app/routes/api.py app/routes/web.py app/templates/partials/item_row.html app/templates/partials/translation.html app/static/app.css tests/test_api.py
@@ -363,7 +363,7 @@ Run: `.venv/bin/pytest -q && .venv/bin/python -m compileall -q app tests`
 
 Expected: all tests pass; compileall exits 0.
 
-- [ ] **Step 4: Commit tracked configuration and docs**
+- [x] **Step 4: Commit tracked configuration and docs**
 
 ```bash
 git add .env.example README.md
@@ -376,7 +376,7 @@ git commit -m "docs: describe translation providers"
 - Runtime DB: `data/radar.db` (ignored)
 - Browser evidence: `output/playwright/translation-desktop.png`, `output/playwright/translation-mobile.png` (ignored)
 
-- [ ] **Step 1: Restart the app**
+- [x] **Step 1: Restart the app**
 
 Stop the existing Uvicorn process and start:
 
@@ -386,15 +386,15 @@ Stop the existing Uvicorn process and start:
 
 Expected: startup succeeds and creates `item_translations`.
 
-- [ ] **Step 2: Verify desktop interaction**
+- [x] **Step 2: Verify desktop interaction**
 
 Open `/items?view=all&category=film`, click the first “译” button, confirm the Mock warning and bilingual panel, refresh, and confirm persistence.
 
-- [ ] **Step 3: Verify mobile interaction**
+- [x] **Step 3: Verify mobile interaction**
 
 Resize to 390×844, repeat translation on a different card, and confirm no horizontal overflow or hidden action.
 
-- [ ] **Step 4: Check runtime evidence**
+- [x] **Step 4: Check runtime evidence**
 
 Run:
 
@@ -405,7 +405,7 @@ sqlite3 data/radar.db 'select count(*), sum(is_mock) from item_translations;'
 
 Expected: health is `{"status":"ok"}`; translation count is at least 2 and every Mock row has `is_mock=1`.
 
-- [ ] **Step 5: Final verification and repository audit**
+- [x] **Step 5: Final verification and repository audit**
 
 Run:
 
@@ -423,7 +423,7 @@ Expected: tests pass, only intentional documentation updates remain, commits use
 **Files:**
 - Modify: `/Users/xiemengying/Documents/Obsidian Vault/03. Resource/灵感/AI 信息雷达.md`
 
-- [ ] **Step 1: Record the translation boundary**
+- [x] **Step 1: Record the translation boundary**
 
 Add MVP v0.4 notes:
 
@@ -434,7 +434,7 @@ Add MVP v0.4 notes:
 - Ollama-first real translation later
 - full-article and automatic bulk translation remain out of scope
 
-- [ ] **Step 2: Re-read the changed section**
+- [x] **Step 2: Re-read the changed section**
 
 Run:
 
