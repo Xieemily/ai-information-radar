@@ -266,7 +266,7 @@ git commit -m "feat: cache item translations"
 - Modify: `app/static/app.css`
 - Modify: `tests/test_api.py`
 
-- [ ] **Step 1: Write failing API and Web tests**
+- [x] **Step 1: Write failing API and Web tests**
 
 Cover:
 
@@ -286,13 +286,13 @@ assert "【模拟译文】" in page.text
 
 Also assert 404 for missing item and card-local configuration text for a 503 provider condition.
 
-- [ ] **Step 2: Run focused tests and verify RED**
+- [x] **Step 2: Run focused tests and verify RED**
 
 Run: `.venv/bin/pytest tests/test_api.py -k translation -q`
 
 Expected: FAIL because translation routes and templates do not exist.
 
-- [ ] **Step 3: Add the API route**
+- [x] **Step 3: Add the API route**
 
 `POST /api/items/{item_id}/translate?force=false` calls the service and returns:
 
@@ -310,15 +310,15 @@ Expected: FAIL because translation routes and templates do not exist.
 
 Map missing item to 404, missing configuration to 503, invalid provider output to 502.
 
-- [ ] **Step 4: Add the HTMX route and bilingual partial**
+- [x] **Step 4: Add the HTMX route and bilingual partial**
 
 Load `Item.translation` with `selectinload`. Add a “译” button targeting `#translation-{item.id}`. Render the original title/summary unchanged, followed by the escaped translation panel. Use `role=status` for card-local errors.
 
-- [ ] **Step 5: Style the panel**
+- [x] **Step 5: Style the panel**
 
 Use the existing orange accent, compact typography, active button state, and mobile-safe natural height. Mock panels must display `模拟译文 · 非真实翻译`.
 
-- [ ] **Step 6: Verify GREEN**
+- [x] **Step 6: Verify GREEN**
 
 Run: `.venv/bin/pytest tests/test_api.py -k translation -q`
 

@@ -176,6 +176,17 @@ h1 { margin-bottom: 4px; font-size: clamp(26px, 3vw, 34px); line-height: 1.15; f
 .item-actions button, .item-actions a { display: grid; width: 25px; height: 25px; place-content: center; padding: 0; border: 0; border-radius: 6px; color: var(--text-3); background: transparent; font-size: 14px; line-height: 1; text-decoration: none; }
 .item-actions button:hover, .item-actions a:hover { color: var(--text); background: var(--surface-hover); }
 .item-actions button.active { color: var(--accent); background: var(--accent-soft); }
+.item-translation-slot:not(:empty) { position: relative; z-index: 2; margin-top: 10px; }
+.translation-panel { padding: 11px 12px; border-left: 2px solid var(--accent); border-radius: 0 9px 9px 0; background: var(--accent-soft); }
+.translation-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 5px; }
+.translation-meta strong { color: var(--accent-ink); font-size: 9px; letter-spacing: .04em; }
+.translation-meta span { color: var(--text-3); font-size: 8px; }
+.translation-panel h3 { margin: 0 0 4px; font-size: 13px; line-height: 1.4; }
+.translation-panel p { display: block; margin: 0; color: var(--text-2); font-size: 11px; line-height: 1.6; -webkit-line-clamp: unset; }
+.translation-panel.is-mock { border-left-color: var(--yellow); background: color-mix(in srgb, var(--yellow) 9%, var(--surface)); }
+.translation-panel.is-mock .translation-meta strong { color: var(--yellow); }
+.translation-error { border-left-color: var(--red); background: var(--red-soft); }
+.translation-error > strong { color: var(--red); font-size: 10px; }
 .event-list { display: grid; max-width: 960px; gap: 8px; margin: auto; }
 .event-card { position: relative; display: grid; grid-template-columns: 52px minmax(0, 1fr) 24px; gap: 14px; align-items: start; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; transition: transform .15s ease, border-color .15s ease, background .15s ease; }
 .event-card:hover { border-color: var(--border-strong); background: var(--surface-hover); transform: translateY(-1px); }

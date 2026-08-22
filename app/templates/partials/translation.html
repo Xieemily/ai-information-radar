@@ -1,0 +1,15 @@
+{% if translation_error %}
+  <div class="translation-panel translation-error" role="status">
+    <strong>暂时无法翻译</strong>
+    <p>{{ translation_error }}</p>
+  </div>
+{% elif translation %}
+  <div class="translation-panel {{ 'is-mock' if translation.is_mock else '' }}" lang="zh-CN">
+    <div class="translation-meta">
+      <strong>{{ '模拟译文 · 非真实翻译' if translation.is_mock else '中文翻译' }}</strong>
+      <span>{{ translation.provider }}</span>
+    </div>
+    <h3>{{ translation.translated_title }}</h3>
+    {% if translation.translated_text %}<p>{{ translation.translated_text }}</p>{% endif %}
+  </div>
+{% endif %}

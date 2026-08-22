@@ -17,6 +17,7 @@ from app.services.importer import import_legacy_feeds
 from app.services.jobs import run_collection_job, run_daily_job
 from app.services.obsidian import export_brief_to_obsidian
 from app.services.feedback import record_item_action
+from app.services.translation import TranslationNotConfigured, translate_item
 
 
 router = APIRouter(prefix="/api")
@@ -119,6 +120,33 @@ def item_feedback(item_id: int, action: str, session: Session = Depends(get_db))
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return {"item_id": item_id, "state": state}
+
+
+@router.post("/items/{item_id}/translate")
+async def translate_item_api(
+    item_id: int,
+    force: bool = False,
+    session: Session = Depends(get_db),
+) -> dict:
+    item = session.get(Item, item_id)
+    if item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    try:
+        outcome = await translate_item(session, item, force=force)
+    except TranslationNotConfigured as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except (ValueError, KeyError) as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    translation = outcome.translation
+    return {
+        "item_id": item_id,
+        "target_language": translation.target_language,
+        "translated_title": translation.translated_title,
+        "translated_text": translation.translated_text,
+        "provider": translation.provider,
+        "is_mock": translation.is_mock,
+        "cached": outcome.cached,
+    }
 
 
 @router.get("/jobs", response_model=list[JobRead])

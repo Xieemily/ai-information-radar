@@ -142,3 +142,64 @@ def test_feedback_views_and_event_pages(tmp_path):
             stored_item.status = "published_at_unknown"
             session.commit()
         assert "Useful AI release" not in client.get("/events").text
+
+
+def test_mock_translation_api_is_cached_and_rendered_inline(tmp_path, monkeypatch):
+    monkeypatch.setenv("TRANSLATION_PROVIDER", "mock")
+    app = create_app(f"sqlite:///{tmp_path / 'translation.db'}", RSSAdapter(fake_fetch))
+    with TestClient(app) as client:
+        client.post(
+            "/api/sources",
+            json={"title": "Demo", "url": "https://example.com/rss"},
+        )
+        client.post("/api/jobs/run?kind=daily")
+        item_id = client.get("/api/items").json()[0]["id"]
+
+        first = client.post(f"/api/items/{item_id}/translate")
+        assert first.status_code == 200
+        assert first.json()["translated_title"] == "【模拟译文】Useful AI release"
+        assert first.json()["is_mock"] is True
+        assert first.json()["cached"] is False
+
+        second = client.post(f"/api/items/{item_id}/translate")
+        assert second.status_code == 200
+        assert second.json()["cached"] is True
+
+        page = client.get("/items?view=all")
+        assert "【模拟译文】Useful AI release" in page.text
+        assert "模拟译文 · 非真实翻译" in page.text
+        assert 'title="查看中文翻译"' in page.text
+
+        partial = client.post(
+            f"/items/{item_id}/translate",
+            headers={"HX-Request": "true"},
+        )
+        assert partial.status_code == 200
+        assert "【模拟中文摘要】Primary evidence" in partial.text
+
+
+def test_translation_routes_explain_missing_item_or_provider(tmp_path, monkeypatch):
+    for key in ("OLLAMA_MODEL", "LLM_BASE_URL", "LLM_MODEL"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("TRANSLATION_PROVIDER", "auto")
+    app = create_app(f"sqlite:///{tmp_path / 'translation-off.db'}", RSSAdapter(fake_fetch))
+    with TestClient(app) as client:
+        client.post(
+            "/api/sources",
+            json={"title": "Demo", "url": "https://example.com/rss"},
+        )
+        client.post("/api/jobs/run?kind=daily")
+        item_id = client.get("/api/items").json()[0]["id"]
+
+        assert client.post("/api/items/9999/translate").status_code == 404
+        unavailable = client.post(f"/api/items/{item_id}/translate")
+        assert unavailable.status_code == 503
+        assert "翻译模型" in unavailable.json()["detail"]
+
+        partial = client.post(
+            f"/items/{item_id}/translate",
+            headers={"HX-Request": "true"},
+        )
+        assert partial.status_code == 200
+        assert "暂时无法翻译" in partial.text
+        assert "OLLAMA_MODEL" in partial.text

@@ -12,6 +12,11 @@
     </div>
     <h2><a href="{{ item.url|default(item.canonical_url|default('#')) }}" target="_blank" rel="noopener noreferrer">{{ item.title }}</a></h2>
     <p>{{ snippet|truncate(180, true, '…') if snippet else '打开原文查看完整内容。' }}</p>
+    <div class="item-translation-slot" id="translation-{{ item.id }}">
+      {% if item.translation %}
+        {% with translation=item.translation, translation_error=none %}{% include "partials/translation.html" %}{% endwith %}
+      {% endif %}
+    </div>
     <div class="item-actions" aria-label="内容操作">
       <form method="post" action="/items/{{ item.id }}/action" hx-post="/items/{{ item.id }}/action" hx-target="#item-{{ item.id }}" hx-swap="outerHTML">
         <input type="hidden" name="view" value="{{ current_view|default('inbox') }}"><input type="hidden" name="action" value="{{ 'unread' if item_state.read else 'read' }}">
@@ -24,6 +29,9 @@
       <form method="post" action="/items/{{ item.id }}/action" hx-post="/items/{{ item.id }}/action" hx-target="#item-{{ item.id }}" hx-swap="outerHTML">
         <input type="hidden" name="view" value="{{ current_view|default('inbox') }}"><input type="hidden" name="action" value="{{ 'unignore' if item_state.ignored else 'ignore' }}">
         <button type="submit" title="{{ '恢复内容' if item_state.ignored else '忽略' }}">{{ '↺' if item_state.ignored else '×' }}</button>
+      </form>
+      <form method="post" action="/items/{{ item.id }}/translate" hx-post="/items/{{ item.id }}/translate" hx-target="#translation-{{ item.id }}" hx-swap="innerHTML">
+        <button class="{{ 'active' if item.translation else '' }}" type="submit" title="{{ '查看中文翻译' if item.translation else '翻译成中文' }}" aria-label="{{ '查看中文翻译' if item.translation else '翻译成中文' }}">译</button>
       </form>
       <a href="{{ item.url|default(item.canonical_url|default('#')) }}" target="_blank" rel="noopener noreferrer" aria-label="查看原文" title="查看原文">↗</a>
     </div>

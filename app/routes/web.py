@@ -19,6 +19,7 @@ from app.models import Brief, EventCluster, Item, JobRun, Source
 from app.services.briefing import application_today, generate_brief
 from app.services.feedback import DEFAULT_ITEM_STATE, item_feedback_states, record_item_action, state_counts
 from app.services.jobs import run_daily_job
+from app.services.translation import TranslationNotConfigured, translate_item
 
 
 router = APIRouter(include_in_schema=False)
@@ -140,7 +141,7 @@ def items_page(
         ]
     else:
         visible_ids = all_item_ids
-    statement = select(Item).join(Source).options(selectinload(Item.source))
+    statement = select(Item).join(Source).options(selectinload(Item.source), selectinload(Item.translation))
     statement = statement.where(Item.id.in_(visible_ids)) if visible_ids else statement.where(Item.id == -1)
     if q.strip():
         pattern = f"%{q.strip()}%"
@@ -206,6 +207,34 @@ def item_action(
         response.headers.update(headers)
         return response
     return RedirectResponse(f"/items?view={view}", status_code=303)
+
+
+@router.post("/items/{item_id}/translate")
+async def item_translate(item_id: int, request: Request, session: Session = Depends(get_db)):
+    item = session.scalar(
+        select(Item)
+        .where(Item.id == item_id)
+        .options(selectinload(Item.translation))
+    )
+    if item is None:
+        return templates.TemplateResponse(
+            request,
+            "partials/translation.html",
+            {"translation": None, "translation_error": "没有找到这条内容。"},
+            status_code=404,
+        )
+    try:
+        outcome = await translate_item(session, item)
+        translation, error = outcome.translation, None
+    except TranslationNotConfigured as exc:
+        translation, error = None, str(exc)
+    except Exception:
+        translation, error = None, "翻译暂时失败，请检查模型连接后重试。"
+    return templates.TemplateResponse(
+        request,
+        "partials/translation.html",
+        {"translation": translation, "translation_error": error},
+    )
 
 
 @router.get("/events", response_class=HTMLResponse)
