@@ -1,0 +1,20 @@
+docs/superpowers/plans/2026-08-23-on-demand-translation.md
+  s_1a757e6fb6fb91::t_859e166fa4bc34 408,437
+  s_1a757e6fb6fb91::t_6a88901c022af9 129,192,252,327,366,379,389,393,397,426
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "e124c0e0ebb875f8290e8a063406b03d5f5e13f9",
+  "prompts": {},
+  "sessions": {
+    "s_1a757e6fb6fb91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a02a3b-f21c-79f1-bc59-c8d5ef702672",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Xieemily <xie.mengying@yahoo.com>"
+    }
+  }
+}
