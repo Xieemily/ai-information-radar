@@ -2,13 +2,13 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title 打开 AI 信息雷达
+# @raycast.title Open AI Information Radar
 # @raycast.mode compact
 
 # Optional parameters:
 # @raycast.icon 📡
-# @raycast.packageName AI 信息雷达
-# @raycast.description 必要时启动本地服务，然后打开 AI 信息雷达
+# @raycast.packageName AI Information Radar
+# @raycast.description Start the local service if needed, then open AI Information Radar
 
 set -u
 
