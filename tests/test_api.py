@@ -1,19 +1,24 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+from email.utils import format_datetime
+
 from fastapi.testclient import TestClient
 
 from app.adapters.rss import RSSAdapter
 from app.main import create_app
 
 
-FEED = """<?xml version="1.0"?><rss version="2.0"><channel><title>Demo feed</title>
+def current_feed() -> str:
+    published_at = format_datetime(datetime.now(timezone.utc))
+    return f"""<?xml version="1.0"?><rss version="2.0"><channel><title>Demo feed</title>
 <item><guid>a1</guid><title>Useful AI release</title><link>https://example.com/a1</link>
-<description>Primary evidence</description><pubDate>Sun, 23 Aug 2026 08:00:00 GMT</pubDate></item>
+<description>Primary evidence</description><pubDate>{published_at}</pubDate></item>
 </channel></rss>"""
 
 
 async def fake_fetch(_: str) -> str:
-    return FEED
+    return current_feed()
 
 
 def test_source_crud_dashboard_and_offline_daily_job(tmp_path):
