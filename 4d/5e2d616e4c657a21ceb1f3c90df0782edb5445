@@ -1,0 +1,26 @@
+scripts/raycast/open-ai-information-radar.sh
+  s_1a757e6fb6fb91::t_487e400f2fc684 17-18,20-23
+  s_1a757e6fb6fb91::t_514e5e12ee02b8 1-15,19,24-31,33,45-61,68-81
+  s_1a757e6fb6fb91::t_5cfa174215e70a 16,32,34-44,62-67
+tests/test_api.py
+  s_1a757e6fb6fb91::t_267f45cd8af120 3-5,12-14,16,21
+README.md
+  s_1a757e6fb6fb91::t_514e5e12ee02b8 35-36,38-40
+  s_1a757e6fb6fb91::t_5cfa174215e70a 37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "4d5e2d616e4c657a21ceb1f3c90df0782edb5445",
+  "prompts": {},
+  "sessions": {
+    "s_1a757e6fb6fb91": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a02a3b-f21c-79f1-bc59-c8d5ef702672",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Xieemily <xie.mengying@yahoo.com>"
+    }
+  }
+}
