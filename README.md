@@ -36,7 +36,7 @@ uvicorn app.main:app --reload --env-file .env
 
 仓库提供了 Script Command：`scripts/raycast/open-ai-information-radar.sh`。它会先检查服务健康状态；未运行时通过 macOS `launchctl` 托管最新版工作树并复用 `data/radar.db`，就绪后自动打开浏览器，重复执行不会启动多个进程。
 
-首次配置只需在 Raycast 中打开 `Settings → Extensions → Script Commands → Add Directories`，选择本仓库的 `scripts/raycast` 目录。之后搜索“打开 AI 信息雷达”即可。Script Command 的元数据格式遵循 [Raycast 官方规范](https://github.com/raycast/script-commands)。
+首次配置只需在 Raycast 中打开 `Settings → Script Commands → Add Script Directory`，选择本仓库的 `scripts/raycast` 目录。之后搜索“打开 AI 信息雷达”即可。Script Command 的元数据格式遵循 [Raycast 官方规范](https://github.com/raycast/script-commands)。
 
 现有 Newsboat 配置通过 `LEGACY_FEEDS_FILE` 幂等导入；应用不会修改旧脚本或 cron。YouTube、Bilibili 第一版通过它们的 RSS/RSSHub Feed 接入，字幕和 Whisper Worker 属于下一里程碑。
 
