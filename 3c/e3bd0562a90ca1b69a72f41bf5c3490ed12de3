@@ -1,0 +1,16 @@
+README.md
+  h_015fb7b6eede42 39
+scripts/raycast/open-ai-information-radar.sh
+  h_015fb7b6eede42 5,10-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "3ce3bd0562a90ca1b69a72f41bf5c3490ed12de3",
+  "prompts": {},
+  "humans": {
+    "h_015fb7b6eede42": {
+      "author": "Xieemily <xie.mengying@yahoo.com>"
+    }
+  }
+}
